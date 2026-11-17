@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#090707">
+<title>VGR STORE | خرید کانفیگ</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#090707;--card:rgba(22,10,12,.94);--text:#fff4f5;--muted:#b9a2a5;--primary:#ef233c;--primary2:#ff334f;--border:rgba(239,35,60,.42)}
+html,body{min-height:100%;background:var(--bg)}
+body{min-height:100vh;color:var(--text);font-family:Tahoma,Arial,sans-serif;overflow-x:hidden;background:radial-gradient(circle at 18% 8%,rgba(239,35,60,.14),transparent 26%),radial-gradient(circle at 85% 28%,rgba(255,23,68,.08),transparent 22%),var(--bg)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;background:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:36px 36px}
+.container{width:min(94%,620px);margin:0 auto;padding:20px 0 45px;position:relative;z-index:1}
+header{text-align:center;padding:25px 15px 20px}
+.logo{width:78px;height:78px;margin:0 auto 15px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(145deg,#261015,#10090b);border:1px solid var(--border);box-shadow:0 0 12px rgba(239,35,60,.3)}
+h1{font-size:24px;margin-bottom:10px;text-shadow:0 0 9px rgba(255,51,79,.55)}
+header p,.note{color:var(--muted);line-height:1.9;font-size:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:20px;box-shadow:0 0 10px rgba(239,35,60,.09)}
+.buttons{display:grid;gap:13px}
+.btn{width:100%;min-height:52px;border:1px solid rgba(255,51,79,.52);border-radius:16px;background:linear-gradient(135deg,rgba(239,35,60,.19),rgba(255,51,79,.055));color:white;font-family:inherit;font-size:14px;font-weight:bold;cursor:pointer;padding:13px;transition:transform .12s,border-color .12s,background .12s}
+.btn.cyan{border-color:rgba(255,92,112,.5);background:linear-gradient(135deg,rgba(255,92,112,.14),rgba(255,92,112,.04))}
+.btn:active{transform:scale(.985)}
+.btn:focus-visible{outline:2px solid #ff8192;outline-offset:3px}
+.note{text-align:center;font-size:12px;margin-top:15px}
+.footer{text-align:center;color:#705e62;font-size:11px;margin-top:25px}
+.screen{display:none}
+.view-enter{animation:viewEnter .28s cubic-bezier(.2,.75,.25,1) both}
+.view-exit{animation:viewExit .16s ease both;pointer-events:none}
+@keyframes viewEnter{from{opacity:0;transform:translateY(13px) scale(.992);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes viewExit{from{opacity:1;transform:translateY(0);filter:blur(0)}to{opacity:0;transform:translateY(-7px);filter:blur(1px)}}
+.screen-title{font-size:19px;font-weight:bold;text-align:center;margin:3px 0 18px;text-shadow:0 0 9px rgba(255,51,79,.45)}
+.back-btn{margin-top:13px;background:rgba(255,255,255,.025);border-color:rgba(255,255,255,.12)}
+.hint{color:var(--muted);font-size:12px;text-align:center;line-height:1.9;margin-top:15px}
+@media(max-width:380px){h1{font-size:21px}.card{padding:16px}}
+@media(prefers-reduced-motion:reduce){.view-enter,.view-exit{animation-duration:.01ms!important}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🎮</div>
+    <h1>VGR STORE</h1>
+    <p>خرید کانفیگ • سریع و آسان</p>
+  </header>
+
+  <main>
+    <section class="screen view-enter" id="homeScreen" style="display:block">
+      <div class="card">
+        <div class="screen-title">گزینه مورد نظر خود را انتخاب کنید</div>
+        <div class="buttons">
+          <button class="btn cyan" id="openMonthly" type="button">🎮 کانفیگ ۱ ماهه</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="monthlyScreen">
+      <div class="card">
+        <div class="screen-title">کانفیگ ۱ ماهه</div>
+        <div class="buttons">
+          <button class="btn" type="button" data-order="کانفیگ ۱ ماهه ۵ گیگ">📦 کانفیگ ۱ ماهه ۵ گیگ</button>
+          <button class="btn cyan" type="button" data-order="کانفیگ ۱ ماهه ۱۰ گیگ">🚀 کانفیگ ۱ ماهه ۱۰ گیگ</button>
+          <button class="btn" type="button" data-order="حجم بیشتر">♾️ حجم بیشتر</button>
+        </div>
+        <p class="hint">با انتخاب هر گزینه، پیام آماده برای ثبت درخواست در تلگرام باز می‌شود.</p>
+      </div>
+      <button class="btn back-btn" id="backHome" type="button">↩️ بازگشت</button>
+    </section>
+  </main>
+  <div class="footer">VGR STORE • Config Shop</div>
+</div>
+<script>
+(function(){
+  'use strict';
+  // نام کاربری ادمین؛ بدون @. در صورت تغییر آیدی، همین مقدار را عوض کن.
+  var ADMIN_USERNAME = 'Parsa_xxxxx';
+  var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+  if(tg){tg.ready();tg.expand();}
+  var home = document.getElementById('homeScreen');
+  var monthly = document.getElementById('monthlyScreen');
+  var current = home;
+
+  function showScreen(next){
+    if(!next || next === current) return;
+    var previous = current;
+    previous.classList.remove('view-enter');
+    previous.classList.add('view-exit');
+    window.setTimeout(function(){
+      previous.style.display = 'none';
+      previous.classList.remove('view-exit');
+      next.style.display = 'block';
+      next.classList.remove('view-enter');
+      void next.offsetWidth;
+      next.classList.add('view-enter');
+      current = next;
+    }, 155);
+  }
+
+  function sendOrder(product){
+    var message = 'سلام وقت بخیر، برای خرید کانفیگ VGR STORE درخواست دارم.\n\n' +
+      'گزینه انتخابی: ' + product + '\n' +
+      'لطفاً قیمت و شرایط تهیه را اعلام کنید.\n\n' +
+      'با تشکر';
+    var username = String(ADMIN_USERNAME).replace(/^@/, '').trim();
+    if(!username || username === 'Parsa_xxxxx'){
+      alert('نام کاربری ادمین را در کد مینی‌اپ با آیدی واقعی تلگرام جایگزین کن.');
+      return;
+    }
+    var url = 'https://t.me/' + username + '?text=' + encodeURIComponent(message);
+    if(tg && tg.openTelegramLink) tg.openTelegramLink(url);
+    else window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  document.getElementById('openMonthly').addEventListener('click', function(){showScreen(monthly);});
+  document.getElementById('backHome').addEventListener('click', function(){showScreen(home);});
+  document.querySelectorAll('[data-order]').forEach(function(button){
+    button.addEventListener('click', function(){sendOrder(button.getAttribute('data-order'));});
+  });
+})();
+</script>
+</body>
+</html>
